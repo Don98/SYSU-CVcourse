@@ -1,0 +1,8 @@
+a.exe "data\TT0351\CC -  (1).bmp" 8 400 "data\TT035_result\CC -  (1).txt" "data\TT035_result\CC -  (1)\000.bmp"
+a.exe "data\TT0351\CC -  (2).bmp" 8 400 "data\TT035_result\CC -  (2).txt" "data\TT035_result\CC -  (2)\000.bmp"
+a.exe "data\TT0351\CC -  (3).bmp" 8 400 "data\TT035_result\CC -  (3).txt" "data\TT035_result\CC -  (3)\000.bmp"
+a.exe "data\TT0351\CC -  (4).bmp" 8 400 "data\TT035_result\CC -  (4).txt" "data\TT035_result\CC -  (4)\000.bmp"
+a.exe "data\TT0351\CC -  (5).bmp" 8 400 "data\TT035_result\CC -  (5).txt" "data\TT035_result\CC -  (5)\000.bmp"
+a.exe "data\TT0351\CC -  (6).bmp" 8 400 "data\TT035_result\CC -  (6).txt" "data\TT035_result\CC -  (6)\000.bmp"
+a.exe "data\TT0351\CC -  (7).bmp" 8 400 "data\TT035_result\CC -  (7).txt" "data\TT035_result\CC -  (7)\000.bmp"
+a.exe "data\TT0351\CC -  (8).bmp" 8 400 "data\TT035_result\CC -  (8).txt" "data\TT035_result\CC -  (8)\000.bmp"
