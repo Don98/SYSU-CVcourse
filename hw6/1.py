@@ -14,5 +14,5 @@ import glob
 # for i in range(3,8):
     # os.mkdir("CC -  (" + str(i + 1) + ")")
     
-for i in range(1,9):
-    print('a.exe "data\TT0351\CC -  (' + str(i) + ').bmp" 8 400 "data\TT035_result\CC -  (' + str(i) + ').txt" "data\TT035_result\CC -  (' + str(i) + ')\\000.bmp"')
+for i in range(1,17):
+    print('a.exe "data\TT0351\CC -  (' + str(i) + ').bmp" "data\TT035_result\CC -  (' + str(i) + ').txt" "data\TT035_result\CC -  (' + str(i) + ')\\000.bmp" "data\TT035_result\CC -  (' + str(i) + ')"')

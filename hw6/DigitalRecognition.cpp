@@ -12,7 +12,91 @@
 #include <fstream>
 #include <xgboost/c_api.h>
 using namespace cv;
-void GetAllFiles( string path, vector<string>& files)  {
+#pragma comment(linker, "/STACK:1073741824")
+// void GetAllFiles( string path, vector<string>& files)  {
+	// long   hFile = 0;  
+	// struct _finddata_t fileinfo;  
+	// string p;  
+	// if((hFile = _findfirst(p.assign(path).append("\\*").c_str(),&fileinfo)) !=  -1){  
+		// do{   
+			// if((fileinfo.attrib &  _A_SUBDIR)){  
+				// if(strcmp(fileinfo.name,".") != 0  &&  strcmp(fileinfo.name,"..") != 0){
+					// files.push_back(p.assign(path).append("\\").append(fileinfo.name) );
+					// GetAllFiles( p.assign(path).append("\\").append(fileinfo.name), files ); 
+				// }
+			// }  
+			// else
+				// files.push_back(p.assign(path).append("\\").append(fileinfo.name) );  
+		// }while(_findnext(hFile, &fileinfo)  == 0);  
+		// _findclose(hFile); 
+	// } 
+// }
+// DigitalRecognition::DigitalRecognition(char *name,char *path){
+	// vector<string> files;
+	// int x,y,num;
+	// for(int i = 0;i < 8;i++){
+		// files.clear();
+		// ifstream infile;
+		// infile.open(name);
+		// GetAllFiles(path, files);
+		// if(i < 4){
+			// for(int j = 0;j < files.size();j++){
+				// Mat image = imread(files[j]);
+				// infile >> x >> y >> num;
+				// cvtColor(image, image, CV_RGB2GRAY);
+				// image = image.reshape(1,1);
+				// this->traindata.push_back(image);
+				// this->trainlabel.push_back(num);
+				// this->all_data.push_back(image);
+				// this->all_label.push_back(num);
+			// }
+		// }else{
+			// for(int j = 0;j < files.size();j++){
+				// Mat image = imread(files[j]);
+				// infile >> x >> y >> num;
+				// cvtColor(image, image, CV_RGB2GRAY);
+				// image = image.reshape(1,1);
+				// this->testdata.push_back(image);
+				// this->testlabel.push_back(num);
+				// this->all_data.push_back(image);
+				// this->all_label.push_back(num);
+			// }
+		// }
+		// name[25] += 1;
+		// path[25] += 1;
+	// }
+	// this->traindata.convertTo(this->traindata, CV_32FC1);
+	// this->testdata.convertTo(this->testdata, CV_32FC1);
+	// this->testlabel.convertTo(this->testlabel, CV_32FC1);
+
+// }
+void GetAllFormatFiles( string path, vector<string>& files,string format)  
+{  
+	long   hFile   =   0;  
+	struct _finddata_t fileinfo;  
+	string p;  
+	if((hFile = _findfirst(p.assign(path).append("\\*" + format).c_str(),&fileinfo)) !=  -1)  
+	{  
+		do  
+		{    
+			if((fileinfo.attrib &  _A_SUBDIR))  
+			{  
+				if(strcmp(fileinfo.name,".") != 0  &&  strcmp(fileinfo.name,"..") != 0)  
+				{
+					GetAllFormatFiles( p.assign(path).append("\\").append(fileinfo.name), files,format); 
+				}
+			}  
+			else  
+			{  
+				files.push_back(p.assign(path).append("\\").append(fileinfo.name) );  
+			}  
+		}while(_findnext(hFile, &fileinfo)  == 0);  
+ 
+		_findclose(hFile); 
+	} 
+} 
+
+void GetAllFiles( string path, vector<string>& files, vector<string>& folders)  {
 	long   hFile = 0;  
 	struct _finddata_t fileinfo;  
 	string p;  
@@ -20,8 +104,8 @@ void GetAllFiles( string path, vector<string>& files)  {
 		do{   
 			if((fileinfo.attrib &  _A_SUBDIR)){  
 				if(strcmp(fileinfo.name,".") != 0  &&  strcmp(fileinfo.name,"..") != 0){
-					files.push_back(p.assign(path).append("\\").append(fileinfo.name) );
-					GetAllFiles( p.assign(path).append("\\").append(fileinfo.name), files ); 
+					folders.push_back(p.assign(path).append("\\").append(fileinfo.name) );
+					GetAllFiles( p.assign(path).append("\\").append(fileinfo.name), files ,folders); 
 				}
 			}  
 			else
@@ -30,15 +114,20 @@ void GetAllFiles( string path, vector<string>& files)  {
 		_findclose(hFile); 
 	} 
 }
-DigitalRecognition::DigitalRecognition(char *name,char *path){
-	vector<string> files;
-	int x,y,num;
-	for(int i = 0;i < 8;i++){
+DigitalRecognition::DigitalRecognition(char *path){
+	vector<string> files,files1,folders,folders1;
+	GetAllFiles(path, files1,folders1);
+	files1.clear();
+	string format = ".txt";
+	GetAllFormatFiles(path, files1,format);
+	int x,y,num,length = folders1.size();
+	for(int i = 0;i < length;i++){
 		files.clear();
+		folders.clear();
 		ifstream infile;
-		infile.open(name);
-		GetAllFiles(path, files);
-		if(i < 4){
+		infile.open(files1[i]);
+		GetAllFiles(folders1[i], files,folders);
+		if(i < length / 2){
 			for(int j = 0;j < files.size();j++){
 				Mat image = imread(files[j]);
 				infile >> x >> y >> num;
@@ -61,14 +150,12 @@ DigitalRecognition::DigitalRecognition(char *name,char *path){
 				this->all_label.push_back(num);
 			}
 		}
-		name[25] += 1;
-		path[25] += 1;
 	}
 	this->traindata.convertTo(this->traindata, CV_32FC1);
 	this->testdata.convertTo(this->testdata, CV_32FC1);
 	this->testlabel.convertTo(this->testlabel, CV_32FC1);
-
 }
+
 
 void DigitalRecognition::knn(int k){	
 	cv::Ptr<cv::ml::KNearest> knn = cv::ml::KNearest::create();
@@ -130,7 +217,6 @@ void DigitalRecognition::adaboost(){
     int var_count = this->all_data.cols;
     Mat new_data( ntrain_samples*class_count, var_count + 1, CV_32F );
     Mat new_responses( ntrain_samples*class_count, 1, CV_32S );
-	
     for( int i = 0; i < ntrain_samples; i++ ){
         const float* data_row = this->all_data.ptr<float>(i);
         for( int j = 0; j < class_count; j++ ){
@@ -173,6 +259,8 @@ void DigitalRecognition::adaboost(){
     printf( "Recognition rate of adaboost : %1f\n", test_hr );
     // cout << "Number of trees: " << the_adaboost->getRoots().size() << endl;
 }
+
+float test2[1229][375];
 void DigitalRecognition::xgboost(){
 	int cols=this->traindata.cols,rows=this->traindata.rows;
 	float train[rows][cols];
@@ -187,6 +275,7 @@ void DigitalRecognition::xgboost(){
 	DMatrixHandle h_train[1];
 	XGDMatrixCreateFromMat((float *) train, rows, cols, -1, &h_train[0]);
 
+	
 	XGDMatrixSetFloatInfo(h_train[0], "label", train_labels, rows);
 
 	bst_ulong bst_result;
@@ -202,7 +291,7 @@ void DigitalRecognition::xgboost(){
 	XGBoosterSetParam(h_booster, "max_depth", "5");
 	XGBoosterSetParam(h_booster, "eta", "0.1");
 	XGBoosterSetParam(h_booster, "min_child_weight", "1");
-	XGBoosterSetParam(h_booster, "subsample", "0.5");
+	XGBoosterSetParam(h_booster, "subsample", "0.7");
 	XGBoosterSetParam(h_booster, "colsample_bytree", "1");
 	XGBoosterSetParam(h_booster, "num_parallel_tree", "1");
 
@@ -210,21 +299,25 @@ void DigitalRecognition::xgboost(){
 		XGBoosterUpdateOneIter(h_booster, iter, h_train[0]);
 
 	const int sample_rows = this->testdata.rows;
-	float test[sample_rows][cols];
-	for (int i=0;i<sample_rows;i++)
-		for (int j=0;j<cols;j++)
-			test[i][j] = (float)this->testdata.at<uchar>(i,j);
+	// cout << this->testdata.rows << " " << this->testdata.cols << endl;
+	// float test1[sample_rows][cols];
+	// float test1[1229][375];
+	for (int i=0;i<sample_rows;i++){
+		// cout << i << endl;
+		for (int j=0;j<cols;j++){
+			// cout << i << " " << j << endl;
+			test2[i][j] = (float)this->testdata.at<uchar>(i,j);
+		}
+	}
 	DMatrixHandle h_test;
-	XGDMatrixCreateFromMat((float *) test, sample_rows, cols, -1, &h_test);
+	XGDMatrixCreateFromMat((float *) test2, sample_rows, cols, -1, &h_test);
 	bst_ulong out_len;
 	const float *f;
 	XGBoosterPredict(h_booster, h_test, 0,0,&out_len,&f);
 	float true_num = 0;
-	for (unsigned int i=0;i<out_len;i++){
-		// std::cout << "prediction[" << i << "]=" << f[i] << std::endl;
+	for (unsigned int i=0;i<out_len;i++)
 		if(abs(f[i] - ((float*)testlabel.data)[i]) < 0.5)
 			true_num++;
-	}
 	printf("Recognition rate of  XG-Boost : %lf\n",true_num / (float)testlabel.rows);	
 
 	// free xgboost internal structures

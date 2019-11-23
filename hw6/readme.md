@@ -7,11 +7,9 @@ g++ test.cpp -std=c++11 -IE:\OpenCV-MinGW-Build\include -IE:\xgboost\include -LE
 ## 运行代码所需要的几个参数
 
 第一个参数: 读入的图像的H-image.bmp
-第二个参数: 膨胀的次数
-第三个参数：删除的联通块长度
-第四个参数：第一个数字数据的txt
-第五个参数：第一个数字数据的图片名
-第六个参数：第一个数字数据所在的路径
+第二个参数：第一个数字数据的txt
+第三个参数：第一个数字数据的图片名
+第四个参数：第一个数字数据所在的路径
 
 ## 运行代码所需要的几个文件夹以及文件
 
@@ -21,6 +19,6 @@ g++ test.cpp -std=c++11 -IE:\OpenCV-MinGW-Build\include -IE:\xgboost\include -LE
 
 ## 温馨提示
 
-运行实例：a.exe "data\TT0351\CC -  (1).bmp" 4 800 "data\TT035_result\CC -  (1).txt" "data\TT035_result\CC -  (1)\000.bmp" "data\TT035_result\CC -  (1)"
+a.exe "data\TT0351\CC -  (1).bmp" "data\TT035_result\CC -  (1).txt" "data\TT035_result\CC -  (1)\000.bmp" "data\TT035_result"
 
 地址 https://github.com/Don98/SYSU-CVcourse

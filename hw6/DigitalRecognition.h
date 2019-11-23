@@ -13,7 +13,8 @@ class DigitalRecognition{
 	private:
 		Mat traindata ,trainlabel,testdata ,testlabel,all_data,all_label;
 	public:
-		DigitalRecognition(char *name,char *path);
+		DigitalRecognition(char *path);
+		// DigitalRecognition(char *name,char *path);
 		void knn(int k);
 		void svm();
 		void adaboost();

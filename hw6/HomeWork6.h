@@ -80,7 +80,7 @@ class HomeWork6{
 		void recognition_number_by_template(int num1,int num2);
 		void recognition_number_by_template1(int num1,int num2);
 		void recognition_number_by_re(int num1,int num2);
-		void write_result(char * name,char * name1);
+		void write_result(char * name,char * name1,char * name2);
 };
 
 #endif

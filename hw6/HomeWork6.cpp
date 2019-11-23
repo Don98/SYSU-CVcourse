@@ -6,6 +6,8 @@
 #include <opencv2/opencv.hpp>
 #include <cstring>
 #include <vector>
+#include <direct.h>
+#include <windows.h>
 #include <iostream>
 using namespace cv;
 using namespace std;
@@ -943,15 +945,30 @@ void HomeWork6::divide_all_part(){
 		this->every_num.push_back(t);
 	}
 }
-void HomeWork6::write_result(char * name,char * name1){
+
+ 
+bool dirExists(const std::string& dirName_in)
+{
+	DWORD ftyp = GetFileAttributesA(dirName_in.c_str());
+	if (ftyp == INVALID_FILE_ATTRIBUTES)
+		return false;  //something is wrong with your path!
+ 
+	if (ftyp & FILE_ATTRIBUTE_DIRECTORY)
+		return true;   // this is a directory!
+ 
+	return false;    // this is not a directory!
+}
+
+void HomeWork6::write_result(char * name,char * name1,char *name2){
 	change_gray();
 	use_otsu();
 	ofstream outfile;
 	outfile.open(name);
 	int num,the_num = 0,the_num1 = 0,the_num2 = 0;
 	for(int i = 0;i < every_num.size();i++){
-	   for(int j = 0 ;j < every_num[i].size();j++){
-		   
+	   for(int j = 0 ;j < every_num[i].size();j++){		   
+			if (0 != access(name2, 0))
+				mkdir(name2);
 			// cout << name1 << endl;
 			if((every_num[i][j].right - every_num[i][j].left) < (every_num[i][j].bottom - every_num[i][j].top)){
 				CImg<unsigned char> number_image(every_num[i][j].right - every_num[i][j].left + 2,every_num[i][j].bottom - every_num[i][j].top + 2,depth,1);
@@ -962,7 +979,8 @@ void HomeWork6::write_result(char * name,char * name1){
 				}
 				// cout << name1 << endl;
 				number_image.resize(15,25).save(name1);
-				name1[30] += 1;
+				// name1[30] += 1;
+				name1[31] += 1;
 				the_num++;
 				// if(the_num == 10 || i == 1)
 					// number_image.display("asd");
@@ -975,19 +993,20 @@ void HomeWork6::write_result(char * name,char * name1){
 				}
 				number_image.resize(15,25).save(name1);
 				// cout << name1 << endl;
-				name1[30] += 1;
+				// name1[30] += 1;
+				name1[31] += 1;
 				the_num++;
 				// if(the_num == 10 || i == 1)
 					// number_image.display("asd");
 			}
 			if(the_num == 10){
-				name1[30] -= 10;
-				name1[29] += 1;
+				name1[31] -= 10;
+				name1[30] += 1;
 				the_num1 += 1;
 				the_num = 0;
 				if(the_num1 == 10){
-					name1[29] -= 10;
-					name1[28] += 1;
+					name1[30] -= 10;
+					name1[29] += 1;
 					the_num1  = 0;
 				}
 			}
